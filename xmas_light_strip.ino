@@ -108,7 +108,7 @@ void preset_5_colors(int intensity) {
 } // preset_5_colors()
 
 
-void effect_sparkle(int repeat_cnt) {
+void effect_sparkle(unsigned long run_time_sec) {
   static const int CNT = 5;
   static const int EFFECT_DELAY = 1000;
   RGB val[CNT];
@@ -130,9 +130,12 @@ void effect_sparkle(int repeat_cnt) {
   delay(EFFECT_DELAY);
 
   // continually pick N (5) pixels to replace with random value
-  int reps = 0;
+
+  unsigned long start_time = millis();
+  unsigned long run_time_msec = run_time_sec * 1000;
+
   uint16_t rpos; // random pixel position
-  while (reps++ < repeat_cnt) {
+  while (millis() - start_time < run_time_msec) {
     for (uint16_t i = 0; i < 5; i++) {
       rpos = random(PIXEL_CNT);
       r = random(CNT);
@@ -145,9 +148,11 @@ void effect_sparkle(int repeat_cnt) {
 
 
 // old school switch between red and green
-void effect_red_green(int repeat_cnt) {
-  int reps = 0;
-  while (reps++ < repeat_cnt) {
+void effect_red_green(unsigned long run_time_sec) {
+  unsigned long start_time = millis();
+  unsigned long run_time_msec = run_time_sec * 1000;
+   
+  while (millis() - start_time < run_time_msec) {
     // red-green ... fill green then populate reds
     s.fill(s.Color(0, 255, 0), 0, 0);
     for (int i = 0; i < PIXEL_CNT; i++) {
@@ -199,11 +204,13 @@ void effect_check(int repeat_cnt) {
 //   0: standard fixed distribution of pixels with fading
 //   1: random selection of pixels with fading
 //   2: whacky random effect
-void effect_fade(int repeat_cnt, int mode) {
+void effect_fade(unsigned long run_time_sec, int mode) {
   static int delta_delay = 50;
   int reps = 0;
 
-  while (reps++ < repeat_cnt) {
+  unsigned long start_time = millis();
+  unsigned long run_time_msec = run_time_sec * 1000;
+  while (millis() - start_time < run_time_msec) {
     // step down
     for (int intensity = 0; intensity < INTENSITY_CNT; intensity++) {
       if (mode == 1) {
